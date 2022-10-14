@@ -6,8 +6,16 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.easy.easyeats.model.PinsResponse;
+import com.easy.easyeats.network.RetrofitClient;
+import com.easy.easyeats.network.UnsplashApi;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
@@ -24,6 +32,23 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController);
+
+        UnsplashApi api = RetrofitClient.newInstance().create(UnsplashApi.class);
+        api.getTopPins("food").enqueue(new Callback<PinsResponse>() {
+            @Override
+            public void onResponse(Call<PinsResponse> call, Response<PinsResponse> response) {
+                if (response.isSuccessful()) {
+                    Log.d("getTopPins", response.body().toString());
+                } else {
+                    Log.d("getTopPins", response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PinsResponse> call, Throwable t) {
+                Log.d("getTopPins", t.toString());
+            }
+        });
     }
 
     @Override
