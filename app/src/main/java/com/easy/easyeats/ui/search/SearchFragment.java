@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.easy.easyeats.R;
+import com.easy.easyeats.databinding.FragmentSearchBinding;
 import com.easy.easyeats.repository.PinsRepository;
 import com.easy.easyeats.repository.PinsViewModelFactory;
 
@@ -33,6 +35,7 @@ public class SearchFragment extends Fragment {
     private String mParam2;
 
     private SearchViewModel viewModel;
+    private FragmentSearchBinding binding;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -68,17 +71,49 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+
+        // TODO: why do we need view binding, and how to bing the view
+        // We had to use findVIewByID to get all the views defined with id in xml layout files
+        // If we have a big project with complicated UIs, it's annoying to do it for every single view.
+        // View Binding allowing automatic binging UI layout resources.
+        // Any views with an @+id tag will have a binding automatically.
+
+        // Steps:
+        // https://developer.android.com/topic/libraries/view-binding#fragments
+        // Step 1: adding a private field, and using inflate() method to generate binding class
+        //         Note: the name should corresponding to its xml file
+        //               fragment_search.xml --> FragmentSearchBinding binding
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
+        // Step 2: Get a reference to the root view by calling the getRoot() method
+        // Step 3: Return the root view from the onCreateView() to
+        // make it the active view on the screen.
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Add a OnQueryTextListener to the search view to enable search with user input.
+        binding.pinsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!query.isEmpty()) {
+                    viewModel.setSearchInput(query);
+                }
+                binding.pinsSearchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         PinsRepository repository = new PinsRepository();
         viewModel = new ViewModelProvider(this, new PinsViewModelFactory(repository)).get(SearchViewModel.class);
-        viewModel.setSearchInput("pizza");
+        // viewModel.setSearchInput("pizza");
         viewModel
                 .getSearchedPins()
                 .observe(

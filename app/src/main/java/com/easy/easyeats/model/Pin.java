@@ -1,13 +1,9 @@
 package com.easy.easyeats.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Pin {
-    public String id;
-    public String alt_description;
-    public Urls urls;
-    public String likes;
-
     class Urls {
         public String raw;
         public String regular;
@@ -34,17 +30,24 @@ public class Pin {
         }
     }
 
+    public String id;
+    public String alt_description;
+    public String likes;
+    public Urls urls;
+    public User user;
+    public List<Tag> tags;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pin pin = (Pin) o;
-        return Objects.equals(id, pin.id) && Objects.equals(alt_description, pin.alt_description) && Objects.equals(urls, pin.urls) && Objects.equals(likes, pin.likes);
+        return Objects.equals(id, pin.id) && Objects.equals(alt_description, pin.alt_description) && Objects.equals(likes, pin.likes) && Objects.equals(urls, pin.urls) && Objects.equals(user, pin.user) && Objects.equals(tags, pin.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, alt_description, urls, likes);
+        return Objects.hash(id, alt_description, likes, urls, user, tags);
     }
 
     @Override
@@ -52,8 +55,10 @@ public class Pin {
         return "Pin{" +
                 "id='" + id + '\'' +
                 ", alt_description='" + alt_description + '\'' +
-                ", urls=" + urls +
                 ", likes='" + likes + '\'' +
+                ", urls=" + urls +
+                ", user=" + user +
+                ", tags=" + tags +
                 '}';
     }
 }
