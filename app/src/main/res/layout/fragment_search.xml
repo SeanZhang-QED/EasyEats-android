@@ -19,7 +19,7 @@
         In contrast, the search view has a default weight 0.
        -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_results_recycler_view"
+        android:id="@+id/pins_results_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

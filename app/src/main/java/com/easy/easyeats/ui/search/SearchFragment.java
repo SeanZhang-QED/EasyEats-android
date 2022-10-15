@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,6 +96,9 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        PinsRepository repository = new PinsRepository();
+        viewModel = new ViewModelProvider(this, new PinsViewModelFactory(repository)).get(SearchViewModel.class);
+        // viewModel.setSearchInput("pizza");
         // Add a OnQueryTextListener to the search view to enable search with user input.
         binding.pinsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -111,16 +116,23 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        PinsRepository repository = new PinsRepository();
-        viewModel = new ViewModelProvider(this, new PinsViewModelFactory(repository)).get(SearchViewModel.class);
-        // viewModel.setSearchInput("pizza");
+        // Added the setup for the RecyclerView
+        SearchPinsAdapter pinsAdapter = new SearchPinsAdapter();
+        // - Setting the layout as Staggered Grid for vertical orientation
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        // - Setting the layout as Staggered Grid for vertical orientation
+        binding.pinsResultsRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+        // - Setting Adapter to RecyclerView
+        binding.pinsResultsRecyclerView.setAdapter(pinsAdapter);
+
         viewModel
                 .getSearchedPins()
                 .observe(
                         getViewLifecycleOwner(),
-                        newsResponse -> {
-                            if (newsResponse != null) {
-                                Log.d("SearchFragment", newsResponse.toString());
+                        pinsResponse -> {
+                            if (pinsResponse != null) {
+                                Log.d("SearchFragment", pinsResponse.toString());
+                                pinsAdapter.setPins(pinsResponse.results);
                             }
                         });
 

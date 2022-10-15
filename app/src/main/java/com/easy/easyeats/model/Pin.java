@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Pin {
-    class Urls {
+    public class Urls {
         public String raw;
         public String regular;
 
@@ -27,6 +27,14 @@ public class Pin {
                     "raw='" + raw + '\'' +
                     ", regular='" + regular + '\'' +
                     '}';
+        }
+
+        public String getRaw() {
+            return raw;
+        }
+
+        public String getRegular() {
+            return regular;
         }
     }
 
@@ -60,5 +68,9 @@ public class Pin {
                 ", user=" + user +
                 ", tags=" + tags +
                 '}';
+    }
+
+    public Urls getUrls() {
+        return this.urls;
     }
 }

@@ -89,9 +89,9 @@ public class HomeFragment extends Fragment {
                 .getTopPins()
                 .observe(
                         getViewLifecycleOwner(),
-                        newsResponse -> {
-                            if (newsResponse != null) {
-                                Log.d("HomeFragment", newsResponse.toString());
+                        pinsResponse -> {
+                            if (pinsResponse != null) {
+                                Log.d("HomeFragment", pinsResponse.toString());
                             }
                         });
     }
