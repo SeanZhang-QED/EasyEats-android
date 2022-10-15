@@ -30,25 +30,11 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+
+        // bind bottom view with navigation graph
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController);
 
-        UnsplashApi api = RetrofitClient.newInstance().create(UnsplashApi.class);
-        api.getTopPins("food").enqueue(new Callback<PinsResponse>() {
-            @Override
-            public void onResponse(Call<PinsResponse> call, Response<PinsResponse> response) {
-                if (response.isSuccessful()) {
-                    Log.d("getTopPins", response.body().toString());
-                } else {
-                    Log.d("getTopPins", response.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PinsResponse> call, Throwable t) {
-                Log.d("getTopPins", t.toString());
-            }
-        });
     }
 
     @Override
