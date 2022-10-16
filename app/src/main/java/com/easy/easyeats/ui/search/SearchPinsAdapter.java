@@ -34,15 +34,12 @@ public class SearchPinsAdapter extends RecyclerView.Adapter<SearchPinsAdapter.Se
     // TODO: why do we need a view holder?
     // It is for holding the view references
     public static class SearchPinsViewHolder extends RecyclerView.ViewHolder {
-
         ImageView itemImageView;
-        TextView itemTitleTextView;
 
         public SearchPinsViewHolder(@NonNull View itemView) {
             super(itemView);
             SearchPinsItemBinding binding = SearchPinsItemBinding.bind(itemView);
             itemImageView = binding.searchItemImage;
-            itemTitleTextView = binding.searchItemTitle;
         }
     }
 
@@ -60,9 +57,7 @@ public class SearchPinsAdapter extends RecyclerView.Adapter<SearchPinsAdapter.Se
     // bind data with view
     public void onBindViewHolder(@NonNull SearchPinsViewHolder holder, int position) {
         Pin pin = pins.get(position);
-
-        Picasso.get().load(pin.getUrls().getRegular()).into(holder.itemImageView);
-        holder.itemTitleTextView.setText(pin.alt_description);
+        Picasso.get().load(pin.urls.getRegular()).into(holder.itemImageView);
     }
 
     @Override

@@ -70,7 +70,4 @@ public class Pin {
                 '}';
     }
 
-    public Urls getUrls() {
-        return this.urls;
-    }
 }

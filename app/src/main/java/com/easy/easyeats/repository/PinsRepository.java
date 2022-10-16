@@ -24,7 +24,7 @@ public class PinsRepository {
 
     public LiveData<PinsResponse> getTopPins(String country) {
         MutableLiveData<PinsResponse> topPinsLiveData = new MutableLiveData<>();
-        api.getTopPins(country.concat(" food"))
+        api.getTopPins(country.concat(" food"), 30)
                 .enqueue(new Callback<PinsResponse>() {
                     @Override
                     public void onResponse(Call<PinsResponse> call, Response<PinsResponse> response) {
@@ -45,7 +45,7 @@ public class PinsRepository {
 
     public LiveData<PinsResponse> searchPins(String query) {
         MutableLiveData<PinsResponse> searchedPinsLiveData = new MutableLiveData<>();
-        api.getSearchedPins(query, 40)
+        api.getSearchedPins(query, 50)
                 .enqueue(new Callback<PinsResponse>() {
                     @Override
                     public void onResponse(Call<PinsResponse> call, Response<PinsResponse> response) {

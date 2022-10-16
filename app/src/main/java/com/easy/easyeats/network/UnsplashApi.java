@@ -10,7 +10,7 @@ public interface UnsplashApi {
 
     @GET("search/photos")
     Call<PinsResponse> getTopPins(
-            @Query("query") String query);
+            @Query("query") String query, @Query("per_page") int pageSize);
 
     @GET("search/photos")
     Call<PinsResponse> getSearchedPins(
