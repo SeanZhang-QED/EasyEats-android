@@ -61,6 +61,18 @@ public class User {
     public ProfileImage profile_image;
     public Social social;
 
+    public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
+    }
+
+    public User(String name, String bio) {
+        this.bio = bio;
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

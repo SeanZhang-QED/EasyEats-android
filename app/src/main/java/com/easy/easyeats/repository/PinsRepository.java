@@ -1,8 +1,13 @@
 package com.easy.easyeats.repository;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.easy.easyeats.EasyEatsApplication;
+import com.easy.easyeats.database.EasyEatsDatabase;
+import com.easy.easyeats.model.Pin;
 import com.easy.easyeats.model.PinsResponse;
 import com.easy.easyeats.network.RetrofitClient;
 import com.easy.easyeats.network.UnsplashApi;
@@ -17,9 +22,11 @@ import retrofit2.Response;
 public class PinsRepository {
 
     private final UnsplashApi api;
+    private final EasyEatsDatabase database;
 
     public PinsRepository() {
         api = RetrofitClient.newInstance().create(UnsplashApi.class);
+        database = EasyEatsApplication.getDatabase(); // the database instance is provided by casting the application context into Application.
     }
 
     public LiveData<PinsResponse> getTopPins(String country) {
@@ -62,5 +69,44 @@ public class PinsRepository {
                     }
                 });
         return searchedPinsLiveData;
+    }
+
+    // TODO: Why do we need to use Async Task to accessing local database? -> dispatch
+    // Database query accessing the disk storage can be very slow sometimes.
+    // We do not want it to run on the default main UI thread.
+    // So we use an AsyncTask to dispatch the query work to a background thread.
+    private static class LikedAsyncTask extends AsyncTask<Pin, Void, Boolean> {
+        private final EasyEatsDatabase database;
+        private final MutableLiveData<Boolean> liveData;
+
+        public LikedAsyncTask(EasyEatsDatabase database, MutableLiveData<Boolean> liveData) {
+            this.database = database;
+            this.liveData = liveData;
+        }
+
+        @Override
+        // Everything inside doInBackground would be executed on a separate background thread.
+        protected Boolean doInBackground(Pin... pins) {
+            Pin pin = pins[0];
+            try {
+                database.pinDao().savePin(pin);
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        // After doInBackground finishes, onPostExecute would be executed back on the main UI thread.
+        protected void onPostExecute(Boolean success) {
+            liveData.setValue(success);
+        }
+    }
+
+    public LiveData<Boolean> likePin(Pin pin) {
+        MutableLiveData<Boolean> resultLiveData = new MutableLiveData<>();
+        new LikedAsyncTask(database, resultLiveData).execute(pin); // execute returns immediately.
+        // The database operation runs in the background and notifies the result through the resultLiveData at a later time.
+        return resultLiveData;
     }
 }

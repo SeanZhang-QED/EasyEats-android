@@ -22,6 +22,7 @@ import java.util.List;
 
 public class SearchPinsAdapter extends RecyclerView.Adapter<SearchPinsAdapter.SearchPinsViewHolder> {
     // 1. Supporting data:
+    //  - pass the list of data to the view, and create a setter function
     private List<Pin> pins = new ArrayList<>();
 
     public void setPins(List<Pin> pinsList) {
@@ -33,6 +34,11 @@ public class SearchPinsAdapter extends RecyclerView.Adapter<SearchPinsAdapter.Se
     // 2. SearchNewsViewHolder:
     // TODO: why do we need a view holder?
     // It is for holding the view references
+    // - see the onBindViewHolder below
+    //   Need to find the view, first. <-  holder.itemView.findViewBtId(R.id.search_news_view)
+    //   DFS to find the view. -> expansive for sliding and binding
+    // -> Only find once when build the viewHolder, not DFS find the view by id every time
+    //   when user sliding the window and reuse the itemView
     public static class SearchPinsViewHolder extends RecyclerView.ViewHolder {
         ImageView itemImageView;
 
