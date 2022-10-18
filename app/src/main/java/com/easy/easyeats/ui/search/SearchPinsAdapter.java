@@ -84,16 +84,13 @@ public class SearchPinsAdapter extends RecyclerView.Adapter<SearchPinsAdapter.Se
         return pins.size();
     }
 
-    // an ItemCallBack interface to relay the events from inside Adapter to Fragment
     interface ItemCallback {
-    // onOpenDetails is to be implemented for opening a new fragment for article details.
-         void onOpenDetails(Pin pin);
+        void onOpenDetails(Pin pin);
     }
 
-    private SearchPinsAdapter.ItemCallback itemCallback;
+    private ItemCallback itemCallback;
 
-    public void setItemCallback(SearchPinsAdapter.ItemCallback itemCallback) {
+    public void setItemCallback(ItemCallback itemCallback) {
         this.itemCallback = itemCallback;
     }
-
 }

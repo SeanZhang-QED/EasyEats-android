@@ -1,5 +1,6 @@
 package com.easy.easyeats.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 @Entity
-public class Pin {
+public class Pin implements Serializable {
 
     @NonNull
     @PrimaryKey

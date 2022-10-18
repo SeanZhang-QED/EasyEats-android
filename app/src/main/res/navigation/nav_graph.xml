@@ -5,6 +5,20 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/menu_home">
 
+    <!-- TODO: Safe Args <-> Type Safety, pass typed data from one fragment to the next fragment -->
+    <!-- The destination has an argument tag, this is the Safe Args.-->
+    <!-- This means the DetailsFragment destination requires an Article object as an argument-->
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="com.easy.easyeats.ui.details.DetailsFragment"
+        android:label="@string/title_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="pin"
+            app:argType="com.easy.easyeats.model.Pin"
+            />
+    </fragment>
+
     <fragment
         android:id="@+id/menu_home"
         android:name="com.easy.easyeats.ui.home.HomeFragment"
@@ -15,9 +29,14 @@
         android:name="com.easy.easyeats.ui.like.LikeFragment"
         android:label="@string/title_like"
         tools:layout="@layout/fragment_like" />
+
     <fragment
         android:id="@+id/menu_search"
         android:name="com.easy.easyeats.ui.search.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_menu_search_to_navigation_details"
+            app:destination="@id/navigation_details" />
+    </fragment>
 </navigation>

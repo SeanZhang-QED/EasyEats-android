@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -143,6 +144,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void onOpenDetails(Pin pin) {
                 Log.d("onOpenDetails", pin.toString());
+                SearchFragmentDirections.ActionMenuSearchToNavigationDetails direction = SearchFragmentDirections.actionMenuSearchToNavigationDetails(pin);
+                NavHostFragment.findNavController(SearchFragment.this).navigate(direction);
+
             }
         });
     }

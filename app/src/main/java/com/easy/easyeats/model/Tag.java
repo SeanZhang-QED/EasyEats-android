@@ -20,8 +20,6 @@ public class Tag {
 
     @Override
     public String toString() {
-        return "Tag{" +
-                " title='" + title + '\'' +
-                '}';
+        return '#' + title + "  ";
     }
 }
