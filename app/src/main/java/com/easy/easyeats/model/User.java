@@ -3,7 +3,7 @@ package com.easy.easyeats.model;
 import java.util.Objects;
 
 public class User {
-    class ProfileImage {
+    public class ProfileImage {
         public String small;
         public String medium;
 
@@ -28,7 +28,7 @@ public class User {
                     '}';
         }
     }
-    class Social {
+    public class Social {
         public String instagram_username;
         public String portfolio_url;
 

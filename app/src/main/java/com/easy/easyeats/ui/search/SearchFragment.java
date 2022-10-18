@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.easy.easyeats.R;
 import com.easy.easyeats.databinding.FragmentSearchBinding;
+import com.easy.easyeats.model.Pin;
 import com.easy.easyeats.repository.PinsRepository;
 import com.easy.easyeats.repository.PinsViewModelFactory;
 
@@ -136,6 +138,13 @@ public class SearchFragment extends Fragment {
                             }
                         });
 
+        // Built a anonymous implementation of ItemCallBack to Adapter
+        pinsAdapter.setItemCallback(new SearchPinsAdapter.ItemCallback() {
+            @Override
+            public void onOpenDetails(Pin pin) {
+                Log.d("onOpenDetails", pin.toString());
+            }
+        });
     }
 
 }

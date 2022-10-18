@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.easy.easyeats.databinding.SearchPinsItemBinding;
 import com.easy.easyeats.model.Pin;
 import com.easy.easyeats.R;
+import com.easy.easyeats.ui.like.LikedPinsAdapter;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -41,11 +42,17 @@ public class SearchPinsAdapter extends RecyclerView.Adapter<SearchPinsAdapter.Se
     //   when user sliding the window and reuse the itemView
     public static class SearchPinsViewHolder extends RecyclerView.ViewHolder {
         ImageView itemImageView;
+        ImageView authorAvatar;
+        TextView authorContent;
+        TextView likesCount;
 
         public SearchPinsViewHolder(@NonNull View itemView) {
             super(itemView);
             SearchPinsItemBinding binding = SearchPinsItemBinding.bind(itemView);
             itemImageView = binding.searchItemImage;
+            authorAvatar = binding.searchAuthorAvatar;
+            authorContent = binding.searchAuthorContent;
+            likesCount = binding.searchItemLikesNumber;
         }
     }
 
@@ -64,12 +71,29 @@ public class SearchPinsAdapter extends RecyclerView.Adapter<SearchPinsAdapter.Se
     public void onBindViewHolder(@NonNull SearchPinsViewHolder holder, int position) {
         Pin pin = pins.get(position);
         Picasso.get().load(pin.urls.getRegular()).into(holder.itemImageView);
+        Picasso.get().load(pin.user.profile_image.medium).into(holder.authorAvatar);
+        holder.authorContent.setText(pin.user.name);
+        holder.likesCount.setText(pin.likes);
+        // Click to open detail view
+        holder.itemImageView.setOnClickListener( v -> itemCallback.onOpenDetails(pin));
     }
 
     @Override
     // providing the current data collection size
     public int getItemCount() {
         return pins.size();
+    }
+
+    // an ItemCallBack interface to relay the events from inside Adapter to Fragment
+    interface ItemCallback {
+    // onOpenDetails is to be implemented for opening a new fragment for article details.
+         void onOpenDetails(Pin pin);
+    }
+
+    private SearchPinsAdapter.ItemCallback itemCallback;
+
+    public void setItemCallback(SearchPinsAdapter.ItemCallback itemCallback) {
+        this.itemCallback = itemCallback;
     }
 
 }

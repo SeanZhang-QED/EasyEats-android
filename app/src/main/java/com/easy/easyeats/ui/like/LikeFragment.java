@@ -2,13 +2,24 @@ package com.easy.easyeats.ui.like;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.easy.easyeats.R;
+import com.easy.easyeats.databinding.FragmentLikeBinding;
+import com.easy.easyeats.model.Pin;
+import com.easy.easyeats.repository.PinsRepository;
+import com.easy.easyeats.repository.PinsViewModelFactory;
+import com.easy.easyeats.ui.search.SearchPinsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +36,9 @@ public class LikeFragment extends Fragment {
     // Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FragmentLikeBinding binding;
+    private LikedViewModel viewModel;
 
     public LikeFragment() {
         // Required empty public constructor
@@ -61,6 +75,38 @@ public class LikeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_like, container, false);
+        binding = FragmentLikeBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        LikedPinsAdapter adapter = new LikedPinsAdapter();
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        binding.pinsLikedRecyclerView.setAdapter(adapter);
+        binding.pinsLikedRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+        PinsRepository repository = new PinsRepository();
+        viewModel = new ViewModelProvider(this, new PinsViewModelFactory(repository)).get(LikedViewModel.class);
+        viewModel.getALlLikedPins()
+                .observe(
+                        getViewLifecycleOwner(),
+                        likedPins -> {
+                            if(likedPins != null) {
+                                Log.d("LikedFragment", likedPins.toString());
+                                adapter.setPins(likedPins);
+                            }
+                        });
+
+        // Provide an anonymous implementation of ItemCallback to the likedPinsAdapter
+        adapter.setItemCallback(new LikedPinsAdapter.ItemCallback() {
+            @Override
+            public void onRemoveFavorite(Pin pin) {
+                viewModel.deleteLikedPin(pin);
+            }
+        });
+    }
+
 }

@@ -111,4 +111,15 @@ public class PinsRepository {
         // The database operation runs in the background and notifies the result through the resultLiveData at a later time.
         return resultLiveData;
     }
+
+    public LiveData<List<Pin>> getAllLikedPins() {
+        return database.pinDao().getAllPins();
+    }
+
+    public void deleteLikedPin(Pin pin) {
+        // A simpler version of the AsyncTask to run deleteArticle operation.
+        // It’s convenient when you don’t care about the result
+        // or the intermediate progress. Those callbacks can be skipped.
+        AsyncTask.execute(() -> database.pinDao().deletePin(pin));
+    }
 }

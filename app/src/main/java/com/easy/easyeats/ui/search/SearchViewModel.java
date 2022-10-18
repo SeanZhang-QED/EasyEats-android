@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.easy.easyeats.model.Pin;
 import com.easy.easyeats.model.PinsResponse;
 import com.easy.easyeats.repository.PinsRepository;
 
@@ -33,5 +34,9 @@ public class SearchViewModel extends ViewModel {
     // 比如： 实际中，手机rotate后，view会被销毁，没有打回车了，所以countryInput为空，以前的输出无法保存下来 - onetime consume。
     public LiveData<PinsResponse> getSearchedPins() {
         return Transformations.switchMap(searchInput, repository::searchPins);
+    }
+
+    public LiveData<Boolean> setLikedPinInput(Pin pin) {
+        return repository.likePin(pin);
     }
 }

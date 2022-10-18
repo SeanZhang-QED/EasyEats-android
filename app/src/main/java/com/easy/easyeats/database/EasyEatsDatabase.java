@@ -10,6 +10,9 @@ import com.easy.easyeats.model.UserConverter;
 
 // TODO: why the method and class is abstract
 // We do not need to implement it, ROom annotation processor will implement it automatically
+// In detail, The ViewModel query APIs abstract away
+// the implementation details about networking or database operations.
+
 @Database(entities = {Pin.class}, version = 1, exportSchema = false)
 // - version specifies a current version. Once we introduce/modify the new version,
 //   we have to increase the version and define the migration strategy.
