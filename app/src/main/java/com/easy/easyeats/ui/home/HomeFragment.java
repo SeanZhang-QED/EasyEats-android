@@ -1,5 +1,6 @@
 package com.easy.easyeats.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Toast;
 
 import com.easy.easyeats.R;
 import com.easy.easyeats.databinding.FragmentHomeBinding;
@@ -159,7 +161,14 @@ public class HomeFragment extends Fragment implements CardStackListener {
         } else if (direction == Direction.Right) {
             Log.d("CardStackView", "Liked "  + layoutManager.getTopPosition());
             Pin likedPin = pins.get(layoutManager.getTopPosition() -1);
-            viewModel.setLikedPinInput(likedPin);
+            // observe the return value shows a toast when it successes
+            viewModel.setLikedPinInput(likedPin)
+                    .observe(getViewLifecycleOwner(),
+                            success -> {
+                                if(success) {
+                                    Toast.makeText(getContext(), "Successfully collected!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
         }
     }
 

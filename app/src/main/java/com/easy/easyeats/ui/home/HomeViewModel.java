@@ -28,7 +28,7 @@ public class HomeViewModel extends ViewModel {
         return repository.getTopPins();
     }
 
-    public void setLikedPinInput(Pin pin) {
-        repository.likePin(pin); // observe the return value shows a toast when it successes
+    public LiveData<Boolean> setLikedPinInput(Pin pin) {
+        return repository.likePin(pin);
     }
 }
