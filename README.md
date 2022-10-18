@@ -22,12 +22,13 @@
 - The pins that user collected will display here in a similar masonry way as Search page.
 - User can cancle the like in here.
 
-![image](https://user-images.githubusercontent.com/66594541/196421743-5e6a3dd8-add1-4bf8-b7fe-f2869fd15500.png)
+![image](https://user-images.githubusercontent.com/66594541/196421981-89a2b2f1-a57a-4aed-85ff-602627eaefb7.png)
+
 
 ### Details page
 - Details pages shows all the details of the pin, such as author's avatar and bio, and also total likes of this pin.
 
-![image](https://user-images.githubusercontent.com/66594541/196419002-1fc0d871-0c5f-447a-bda7-f6124a59bfa6.png)
+![image](https://user-images.githubusercontent.com/66594541/196421858-7720921f-8dc9-47ac-90f3-780b2e2f13cd.png)
 
 
 
