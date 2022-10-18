@@ -117,11 +117,11 @@ public class HomeFragment extends Fragment implements CardStackListener {
                 .getTopPins()
                 .observe(
                         getViewLifecycleOwner(),
-                        pinsResponse -> {
-                            if (pinsResponse != null) {
-                                Log.d("HomeFragment", pinsResponse.toString());
-                                swipeAdapter.setPins(pinsResponse.results);
-                                pins = pinsResponse.results;
+                        pinsList  -> {
+                            if (pinsList != null) {
+                                Log.d("HomeFragment", pinsList.toString());
+                                swipeAdapter.setPins(pinsList);
+                                pins = pinsList;
                             }
                         });
     }

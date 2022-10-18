@@ -9,6 +9,8 @@ import com.easy.easyeats.model.Pin;
 import com.easy.easyeats.model.PinsResponse;
 import com.easy.easyeats.repository.PinsRepository;
 
+import java.util.List;
+
 public class HomeViewModel extends ViewModel {
 
     private final PinsRepository repository;
@@ -18,23 +20,12 @@ public class HomeViewModel extends ViewModel {
         this.repository = pinsRepository;
     }
 
-    // TODO: why do we split the function into 2
-    /*  -- Can split this function into 2 functions like below --
-        public LiveData<NewsResponse> getTopHeadlines(String country) {
-            return newsRepository.getTomHeadlines(country);
-        }
-    */
-
     public void setCountryInput(String country) {
         countryInput.setValue(country);
     }
 
-    public LiveData<PinsResponse> getTopPins() {
-        // ui subscribes the data
-        // 根据输入，可以先有生产线，等有输入时才生产
-        // 好处是，countryInput数据被保留下来了，不是一次性的，保留state
-        // 比如： 实际中，手机rotate后，view会被销毁，没有打回车了，所以countryInput为空，以前的输出无法保存下来 - onetime consume。
-        return Transformations.switchMap(countryInput, repository::getTopPins);
+    public LiveData<List<Pin>> getTopPins(){
+        return repository.getTopPins();
     }
 
     public void setLikedPinInput(Pin pin) {

@@ -12,6 +12,8 @@ import com.easy.easyeats.model.PinsResponse;
 import com.easy.easyeats.network.RetrofitClient;
 import com.easy.easyeats.network.UnsplashApi;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,13 +31,13 @@ public class PinsRepository {
         database = EasyEatsApplication.getDatabase(); // the database instance is provided by casting the application context into Application.
     }
 
-    public LiveData<PinsResponse> getTopPins(String country) {
-        MutableLiveData<PinsResponse> topPinsLiveData = new MutableLiveData<>();
-        api.getTopPins(country.concat(" food"), 30)
-                .enqueue(new Callback<PinsResponse>() {
+    public LiveData<List<Pin>> getTopPins() {
+        MutableLiveData<List<Pin>> topPinsLiveData = new MutableLiveData<>();
+        api.getTopPins("food", 30)
+                .enqueue(new Callback<List<Pin>>() {
                     @Override
-                    public void onResponse(Call<PinsResponse> call, Response<PinsResponse> response) {
-                        if (response.isSuccessful()) {
+                    public void onResponse(Call<List<Pin>> call, Response<List<Pin>> response) {
+                        if(response.isSuccessful()) {
                             topPinsLiveData.setValue(response.body());
                         } else {
                             topPinsLiveData.setValue(null);
@@ -43,7 +45,7 @@ public class PinsRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<PinsResponse> call, Throwable t) {
+                    public void onFailure(Call<List<Pin>> call, Throwable t) {
                         topPinsLiveData.setValue(null);
                     }
                 });
